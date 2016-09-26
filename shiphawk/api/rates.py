@@ -6,4 +6,4 @@ class RatesApi(object):
         self.api = api
 
     def request(self, details):
-        return self.api.post(rates_path(), json=details)
+        return self.api.post(rates_path(), json=details)['rates']
