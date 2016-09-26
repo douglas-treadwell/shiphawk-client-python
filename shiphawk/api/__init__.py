@@ -15,7 +15,7 @@ def process_response(original_function):
         response = original_function(*args, **kwargs)
 
         if (response.status_code // 100) != 2:
-            raise_error(response.status_code)
+            raise_error(response)
 
         try:
             return response.json()

@@ -52,5 +52,5 @@ error_map = {
 }
 
 
-def raise_error(http_status_code):
-    raise error_map.get(http_status_code, ShiphawkError)
+def raise_error(response):
+    raise (error_map.get(response.status_code, ShiphawkError)(response))
