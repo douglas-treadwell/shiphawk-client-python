@@ -50,3 +50,5 @@ def zip_codes_path(sub_path=None):
     return 'zip_codes/%s' % none_to_empty_string(sub_path)
 
 
+def orders_path(sub_path=None):
+    return 'orders/%s' % none_to_empty_string(sub_path)

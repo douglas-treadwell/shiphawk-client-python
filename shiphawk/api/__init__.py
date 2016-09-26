@@ -3,6 +3,7 @@ import requests
 from ..errors import raise_error
 
 from .products import ProductsApi
+from .orders import OrdersApi
 
 from functools import wraps
 
@@ -36,6 +37,8 @@ class Api(object):
 
         self.products = ProductsApi(self)
         self.skus = self.products  # an alternative way to access the same api
+
+        self.orders = OrdersApi(self)
 
     # endpoint in all the below should be resource_path
 
