@@ -1,6 +1,6 @@
 import requests
 
-from ..errors import raise_error
+from ..errors import raise_if_error
 
 from .products import ProductsApi
 from .rates import RatesApi
@@ -14,8 +14,7 @@ def process_response(original_function):
     def wrapper(*args, **kwargs):
         response = original_function(*args, **kwargs)
 
-        if (response.status_code // 100) != 2:
-            raise_error(response)
+        raise_if_error(response)
 
         try:
             return response.json()
