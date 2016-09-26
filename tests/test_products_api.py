@@ -20,29 +20,25 @@ class ProductsApiTest(BaseTestCase):
         return str(uuid.uuid4())
 
     def test_1_create_product(self):
-        response = self.client.products.create({'sku': self.sku})
-        self.assertSuccessful(response)
+        self.client.products.create({'sku': self.sku})
 
     def test_2_get_product(self):
-        response = self.client.products.get(self.sku)
-        self.assertSuccessful(response)
+        self.client.products.get(self.sku)
 
     def test_3_delete_product(self):
-        response = self.client.products.delete(self.sku)
-        self.assertSuccessful(response)
+        self.client.products.delete(self.sku)
 
     def test_4_get_all_products(self):
         skus = self.skus
 
-        previous_sku_count = len(self.client.products.get().json())
+        previous_sku_count = len(self.client.products.get())
 
         for sku in skus:
             self.client.products.create({'sku': sku})
 
-        new_sku_count = len(self.client.products.get().json())
+        new_sku_count = len(self.client.products.get())
 
         self.assertEqual(new_sku_count, previous_sku_count + len(skus))
 
     def test_5_delete_multiple_products(self):
-        response = self.client.products.delete(self.skus)
-        self.assertSuccessful(response)
+        self.client.products.delete(self.skus)

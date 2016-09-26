@@ -9,7 +9,7 @@ from .orders import OrdersApi
 from functools import wraps
 
 
-def raise_errors(original_function):
+def process_response(original_function):
     @wraps(original_function)
     def wrapper(*args, **kwargs):
         response = original_function(*args, **kwargs)
@@ -17,7 +17,10 @@ def raise_errors(original_function):
         if (response.status_code // 100) != 2:
             raise_error(response.status_code)
 
-        return response
+        try:
+            return response.json()
+        except ValueError:
+            return response.content  # likely ""
 
     return wrapper
 
@@ -44,23 +47,23 @@ class Api(object):
 
     # endpoint in all the below should be resource_path
 
-    @raise_errors
+    @process_response
     def get(self, endpoint, params=None, **kwargs):
         return requests.get(self.base_url + endpoint, params, headers=self.http_headers, **kwargs)
 
-    @raise_errors
+    @process_response
     def patch(self, endpoint, data=None, **kwargs):
         return requests.patch(self.base_url + endpoint, data, headers=self.http_headers, **kwargs)
 
-    @raise_errors
+    @process_response
     def put(self, endpoint, data=None, **kwargs):
         return requests.put(self.base_url + endpoint, data, headers=self.http_headers, **kwargs)
 
-    @raise_errors
+    @process_response
     def post(self, endpoint, data=None, json=None, **kwargs):
         return requests.post(self.base_url + endpoint, data=data, json=json, headers=self.http_headers, **kwargs)
 
-    @raise_errors
+    @process_response
     def delete(self, endpoint, **kwargs):
         return requests.delete(self.base_url + endpoint, headers=self.http_headers, **kwargs)
 
