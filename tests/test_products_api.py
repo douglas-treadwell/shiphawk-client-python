@@ -1,5 +1,7 @@
 from . import get_test_client, BaseTestCase
 
+from shiphawk.errors import NotFoundError
+
 import uuid
 
 
@@ -27,6 +29,9 @@ class ProductsApiTest(BaseTestCase):
 
     def test_3_delete_product(self):
         self.client.products.delete(self.sku)
+
+        with self.assertRaises(NotFoundError):
+            self.client.products.get(self.sku)
 
     def test_4_get_all_products(self):
         skus = self.skus
