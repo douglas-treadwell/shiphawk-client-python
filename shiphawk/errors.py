@@ -1,8 +1,8 @@
 class ShiphawkError(Exception):
     """Base for Shiphawk related errors"""
-    def _init__(self, data):
+    def __init__(self, response):
         Exception.__init__(self)
-        self.data = data
+        self.response = response
 
 
 class GeneralError(ShiphawkError):
