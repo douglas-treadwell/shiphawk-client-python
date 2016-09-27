@@ -10,9 +10,9 @@ ignore_payment_errors = os.environ.get('SHIPHAWK_IGNORE_PAYMENT_ERRORS', None) =
 
 def get_test_client(sandbox=True):
     if sandbox:
-        return Client(api_token=os.environ['SHIPHAWK_SANDBOX_API_TOKEN'], sandbox=True)
+        return Client(api_token=os.environ.get('SHIPHAWK_SANDBOX_API_TOKEN', None), sandbox=True)
     else:
-        return Client(api_token=os.environ['SHIPHAWK_API_TOKEN'], sandbox=False)
+        return Client(api_token=os.environ.get('SHIPHAWK_API_TOKEN', None), sandbox=False)
 
 
 class BaseTestCase(unittest.TestCase):
