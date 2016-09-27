@@ -49,6 +49,10 @@ def shipment_commercial_invoice_path(shipment_id):
     return shipments_path('%s/commercial_invoice' % shipment_id)
 
 
+def shipment_bill_of_lading_path(shipment_id):
+    return shipments_path('%s/bol' % shipment_id)
+
+
 def shipments_status_path():
     return shipments_path('status')
 

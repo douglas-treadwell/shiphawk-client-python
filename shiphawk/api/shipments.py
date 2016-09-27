@@ -1,5 +1,6 @@
 from .paths import shipments_path, shipment_labels_path, shipment_notes_path
 from .paths import shipment_commercial_invoice_path, shipment_tracking_path
+from .paths import shipment_bill_of_lading_path
 from .paths import external_shipments_path
 
 
@@ -49,6 +50,30 @@ class ShipmentsApi(object):
                 shipment_commercial_invoice_path(shipment_id),
                 {'regen_pdf': True}
             )
+
+    def get_bill_of_lading(self, shipment_id, refresh=False, carrier_code=None):
+        if not refresh and not carrier_code:
+            return self.api.get(
+                shipment_bill_of_lading_path(shipment_id),
+            )
+        elif carrier_code:
+            return self.api.get(
+                shipment_bill_of_lading_path(shipment_id),
+                {
+                    'carrier_code': carrier_code
+                }
+            )
+        elif refresh:  # carrier_code is required in this case
+            return self.api.get(
+                shipment_bill_of_lading_path(shipment_id),
+                {
+                    'regen_pdf': True,
+                    'carrier_code': carrier_code
+                }
+            )
+
+    def get_bol(self, *args, **kwargs):
+        return self.get_bill_of_lading(*args, **kwargs)
 
     def track(self, shipment_id):
         return self.api.get(shipment_tracking_path(shipment_id))
