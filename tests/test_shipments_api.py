@@ -190,6 +190,18 @@ class ShipmentsApiTest(BaseTestCase):
             if not ShipmentsApiTest.using_external_shipment:
                 raise error
 
+    def test_13_create_label(self):
+        try:
+            label = self.client.shipments.create_label(ShipmentsApiTest.shipment_id)
+            self.assertTrue('url' in label.keys())
+        except UnprocessableEntityError as error:
+            try:
+                if not ShipmentsApiTest.using_external_shipment or \
+                        error.response.json()['error'] != "undefined method `error?' for nil:NilClass":
+                    raise error
+            except:
+                raise error
+
     def test_99_cancel_shipment(self):
         self.client.shipments.cancel(ShipmentsApiTest.shipment_id)
 
