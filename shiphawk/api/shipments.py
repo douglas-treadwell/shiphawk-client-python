@@ -99,7 +99,7 @@ class ShipmentsApi(object):
         """
 
         data = {
-            body: body
+            'body': body
         }
 
         if tag:
