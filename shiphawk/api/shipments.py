@@ -1,6 +1,7 @@
 from .paths import shipments_path, shipment_labels_path, shipment_notes_path
-from .paths import shipment_commercial_invoice_path
+from .paths import shipment_commercial_invoice_path, shipment_tracking_path
 from .paths import external_shipments_path
+
 
 class ShipmentsApi(object):
     def __init__(self, api):
@@ -48,6 +49,15 @@ class ShipmentsApi(object):
                 shipment_commercial_invoice_path(shipment_id),
                 {'regen_pdf': True}
             )
+
+    def track(self, shipment_id):
+        return self.api.get(shipment_tracking_path(shipment_id))
+
+    def set_tracking_callback(self, shipment_id, callback_url):
+        return self.api.post(
+            shipment_tracking_path(shipment_id),
+            json={'callback_url': callback_url}
+        )
 
     def create_label(self, shipment_id):
         return self.api.post(shipment_labels_path(shipment_id))

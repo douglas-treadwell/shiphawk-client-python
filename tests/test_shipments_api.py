@@ -105,13 +105,17 @@ class ShipmentsApiTest(BaseTestCase):
         shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
         self.assertEqual(shipment['tracking_number'], str(101))
 
-    def test_4_cancel_shipment(self):
-        self.client.shipments.cancel(ShipmentsApiTest.shipment_id)
+    def test_4_track_shipment(self):
+        tracking_info = self.client.shipments.track(ShipmentsApiTest.shipment_id)
+        self.assertTrue('status' in tracking_info.keys())
 
-        shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
-        self.assertEqual(shipment['status'], 'cancelled')
+    def test_5_set_tracking_callback(self):
+        self.client.shipments.set_tracking_callback(
+            ShipmentsApiTest.shipment_id,
+            'http://google.com'  # it would be nice if we could test the callback
+        )
 
-    def test_5_get_commercial_invoice(self):
+    def test_6_get_commercial_invoice(self):
         # the try/except here is another workaround for un-configured
         # sandbox accounts
 
@@ -123,3 +127,9 @@ class ShipmentsApiTest(BaseTestCase):
                     raise error
             except:
                 raise error
+
+    def test_9_cancel_shipment(self):
+        self.client.shipments.cancel(ShipmentsApiTest.shipment_id)
+
+        shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
+        self.assertEqual(shipment['status'], 'cancelled')
