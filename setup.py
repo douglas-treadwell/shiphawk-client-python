@@ -6,7 +6,6 @@ except ImportError:
     from distutils.core import setup
 
 setup(
-    name='shiphawk-client-python',
     version='0.0.2',
     description='ShipHawk API Client for Python',
     author='Douglas Treadwell',
