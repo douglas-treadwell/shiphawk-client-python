@@ -22,6 +22,9 @@ class ShipmentsApiTest(BaseTestCase):
         'zip': '60515'
     }
 
+    # to communicate between sequential tests
+    shipment_id = None
+
     @classmethod
     def setUpClass(cls):
         cls.client = get_test_client()
@@ -58,7 +61,10 @@ class ShipmentsApiTest(BaseTestCase):
                                      origin_address=self.minimal_origin_address,
                                      destination_address=self.minimal_destination_address)
 
-    def test_create_shipment_from_rate(self):
+    def test_add_external_shipment(self):
+        self.add_external_shipment()
+
+    def test_1_create_shipment_from_rate(self):
         rates = self.get_rates()
 
         accepted_rate = rates[0]
@@ -83,5 +89,24 @@ class ShipmentsApiTest(BaseTestCase):
 
         ShipmentsApiTest.shipment_id = shipment['id']
 
-    def test_add_external_shipment(self):
-        self.add_external_shipment()
+    def test_2_get_shipment(self):
+        self.client.shipments.get(ShipmentsApiTest.shipment_id)
+
+    def test_3_update_shipment(self):
+        # note that the status field is required in updates
+        # although this is not mentioned in the API documentation
+
+        self.client.shipments.update({
+            'id': ShipmentsApiTest.shipment_id,
+            'tracking_number': 101,
+            'status': 'ordered'
+        })
+
+        shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
+        self.assertEqual(shipment['tracking_number'], str(101))
+
+    def test_4_cancel_shipment(self):
+        self.client.shipments.cancel(ShipmentsApiTest.shipment_id)
+
+        shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
+        self.assertEqual(shipment['status'], 'cancelled')
