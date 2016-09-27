@@ -53,8 +53,11 @@ class ShipmentsApiTest(BaseTestCase):
             'service_level': 'UPS Ground'  # not required
         })
 
+    def test_00_add_external_shipment(self):
+        self.add_external_shipment()
+
     @unittest.expectedFailure  # address details are required to create a shipment
-    def test_create_shipment_from_zipcode_rate(self):
+    def test_00_create_shipment_from_zipcode_rate(self):
         rates = self.get_zipcode_rates()
 
         accepted_rate = rates[0]
@@ -62,9 +65,6 @@ class ShipmentsApiTest(BaseTestCase):
         self.client.shipments.create(rate_id=accepted_rate['id'],
                                      origin_address=self.minimal_origin_address,
                                      destination_address=self.minimal_destination_address)
-
-    def test_add_external_shipment(self):
-        self.add_external_shipment()
 
     def test_01_create_shipment_from_rate(self):
         rates = self.get_rates()
