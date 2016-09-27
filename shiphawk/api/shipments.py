@@ -84,8 +84,17 @@ class ShipmentsApi(object):
             json={'callback_url': callback_url}
         )
 
-    def create_label(self, shipment_id):
-        return self.api.post(shipment_labels_path(shipment_id))
+    def create_label(self, shipment_id, label_format=None):
+        if not label_format:  # defaults to PDF, but leave that to the server
+            return self.api.post(
+                shipment_labels_path(shipment_id)
+            )
+        else:
+            return self.api.post(
+                shipment_labels_path(shipment_id),
+                {'label_format': label_format}
+            )
+
 
     def get_labels(self, shipment_id):
         return self.api.get(shipment_labels_path(shipment_id))
