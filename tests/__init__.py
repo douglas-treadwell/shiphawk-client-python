@@ -5,9 +5,6 @@ import unittest
 import os
 
 
-ignore_payment_errors = os.environ.get('SHIPHAWK_IGNORE_PAYMENT_ERRORS', None) == 'true'
-
-
 def get_test_client():
     return Client(api_token=os.environ.get('SHIPHAWK_SANDBOX_API_TOKEN', None), sandbox=True)
 

@@ -26,6 +26,10 @@ def shipments_path(sub_path=None):
     return 'shipments/%s' % none_to_empty_string(sub_path)
 
 
+def external_shipments_path():
+    return 'external_shipments'
+
+
 def shipment_notes_path(shipment_id, note_id=None):
     if not note_id:
         return shipments_path('%s/notes' % shipment_id)

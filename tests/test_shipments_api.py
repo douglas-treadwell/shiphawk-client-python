@@ -1,4 +1,5 @@
-from . import get_test_client, BaseTestCase, pallets, ignore_payment_errors
+from . import get_test_client, BaseTestCase, pallets
+from shiphawk import UnprocessableEntityError
 
 import unittest
 
@@ -39,6 +40,14 @@ class ShipmentsApiTest(BaseTestCase):
             'items': pallets(4)
         })
 
+    def add_external_shipment(self):
+        return self.client.shipments.add_external({
+            'origin_address': self.origin_address,
+            'destination_address': self.destination_address,
+            'carrier_code': 'ups',  # not required
+            'service_level': 'UPS Ground'  # not required
+        })
+
     @unittest.expectedFailure  # address details are required to create a shipment
     def test_create_shipment_from_zipcode_rate(self):
         rates = self.get_zipcode_rates()
@@ -49,18 +58,30 @@ class ShipmentsApiTest(BaseTestCase):
                                      origin_address=self.minimal_origin_address,
                                      destination_address=self.minimal_destination_address)
 
-    '''
-    Note: Will fail if Stripe hasn't been configured for the ShipHawk account.
-
-    "Your account does not have a stripe_customer_id and is unable to book
-     shipments using ShipHawk's tariffs"
-    '''
-    @unittest.skipIf(ignore_payment_errors, "will fail even in sandbox if payment method isn't configured")
     def test_create_shipment_from_rate(self):
         rates = self.get_rates()
 
         accepted_rate = rates[0]
 
-        self.client.shipments.create(rate_id=accepted_rate['id'],
-                                     origin_address=self.origin_address,
-                                     destination_address=self.destination_address)
+        # the except handler below is a workaround for ShipHawk sandbox
+        # accounts not set up to allow creating shipments, which requires
+        # a ShipHawk administrator to set up a stripe_customer_id
+
+        try:
+            shipment = self.client.shipments.create(
+                rate_id=accepted_rate['id'],
+                origin_address=self.origin_address,
+                destination_address=self.destination_address)
+        except UnprocessableEntityError as error:
+            try:
+                if 'stripe_customer_id' in error.response.json()['error']:
+                    shipment = self.add_external_shipment()
+                else:
+                    raise error
+            except:
+                raise error
+
+        ShipmentsApiTest.shipment_id = shipment['id']
+
+    def test_add_external_shipment(self):
+        self.add_external_shipment()

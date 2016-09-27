@@ -1,5 +1,5 @@
 from .paths import shipments_path, shipment_labels_path, shipment_notes_path
-
+from .paths import external_shipments_path
 
 class ShipmentsApi(object):
     def __init__(self, api):
@@ -23,7 +23,7 @@ class ShipmentsApi(object):
             })
 
     def add_external(self, shipment_details):
-        return self.api.post(shipments_path(), json=shipment_details)
+        return self.api.post(external_shipments_path(), json=shipment_details)
 
     def update(self, shipment_details):
         if 'id' not in shipment_details.keys():
