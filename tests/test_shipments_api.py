@@ -110,3 +110,16 @@ class ShipmentsApiTest(BaseTestCase):
 
         shipment = self.client.shipments.get(ShipmentsApiTest.shipment_id)
         self.assertEqual(shipment['status'], 'cancelled')
+
+    def test_5_get_commercial_invoice(self):
+        # the try/except here is another workaround for un-configured
+        # sandbox accounts
+
+        try:
+            self.client.shipments.get_commercial_invoice(ShipmentsApiTest.shipment_id)
+        except UnprocessableEntityError as error:
+            try:
+                if error.response.json()['error'] != 'A commercial invoice is unnecessary for this shipment.':
+                    raise error
+            except:
+                raise error

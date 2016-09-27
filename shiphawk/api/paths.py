@@ -45,6 +45,10 @@ def shipment_labels_path(shipment_id):
     return shipments_path('%s/labels' % shipment_id)
 
 
+def shipment_commercial_invoice_path(shipment_id):
+    return shipments_path('%s/commercial_invoice' % shipment_id)
+
+
 def shipments_status_path():
     return shipments_path('status')
 

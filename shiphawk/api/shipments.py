@@ -1,4 +1,5 @@
 from .paths import shipments_path, shipment_labels_path, shipment_notes_path
+from .paths import shipment_commercial_invoice_path
 from .paths import external_shipments_path
 
 class ShipmentsApi(object):
@@ -33,6 +34,20 @@ class ShipmentsApi(object):
 
     def cancel(self, shipment_id):
         return self.api.delete(shipments_path(shipment_id))
+
+    def get_commercial_invoice(self, shipment_id, refresh=False):
+        # code duplication below is to avoid adding the regen_pdf
+        # query string parameter unless needed
+
+        if not refresh:
+            return self.api.get(
+                shipment_commercial_invoice_path(shipment_id),
+            )
+        else:
+            return self.api.get(
+                shipment_commercial_invoice_path(shipment_id),
+                {'regen_pdf': True}
+            )
 
     def create_label(self, shipment_id):
         return self.api.post(shipment_labels_path(shipment_id))
