@@ -4,7 +4,7 @@ from .api import Api
 
 
 class Client(object):
-    VERSION = '0.0.1'
+    VERSION = '0.0.2'
 
     PRODUCTION_API_HOST = 'https://shiphawk.com'
     SANDBOX_API_HOST = 'https://sandbox.shiphawk.com'

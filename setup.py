@@ -7,7 +7,7 @@ except ImportError:
 
 setup(
     name='shiphawk-client-python',
-    version='0.0.1',
+    version='0.0.2',
     description='ShipHawk API Client for Python',
     author='Douglas Treadwell',
     author_email='douglas.treadwell@gmail.com',
