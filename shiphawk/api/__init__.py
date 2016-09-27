@@ -5,6 +5,7 @@ from ..errors import raise_if_error
 from .products import ProductsApi
 from .rates import RatesApi
 from .orders import OrdersApi
+from .shipments import ShipmentsApi
 
 from functools import wraps
 
@@ -43,6 +44,7 @@ class Api(object):
 
         self.rates = RatesApi(self)
         self.orders = OrdersApi(self)
+        self.shipments = ShipmentsApi(self)
 
     # endpoint in all the below should be resource_path
 
