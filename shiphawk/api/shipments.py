@@ -95,7 +95,6 @@ class ShipmentsApi(object):
                 {'label_format': label_format}
             )
 
-
     def get_labels(self, shipment_id):
         return self.api.get(shipment_labels_path(shipment_id))
 
