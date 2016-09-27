@@ -128,6 +128,21 @@ class ShipmentsApiTest(BaseTestCase):
             except:
                 raise error
 
+    # BROKEN: likely due to type of shipment or sandbox account setup
+    # but that we get this response indicates the call is likely correct
+    def test_7_get_bill_of_lading(self):
+        # the try/except here is another workaround for un-configured
+        # sandbox accounts
+
+        try:
+            self.client.shipments.get_bill_of_lading(ShipmentsApiTest.shipment_id, carrier_code='ups')
+        except UnprocessableEntityError as error:
+            try:  # here we verify the broken result is the one we expect
+                if error.response.json()['error'] != "undefined method `bill_to_account_number' for nil:NilClass":
+                    raise error
+            except:
+                raise error
+
     def test_9_cancel_shipment(self):
         self.client.shipments.cancel(ShipmentsApiTest.shipment_id)
 
