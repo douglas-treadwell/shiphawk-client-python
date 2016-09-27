@@ -6,6 +6,7 @@ from .products import ProductsApi
 from .rates import RatesApi
 from .orders import OrdersApi
 from .shipments import ShipmentsApi
+from .addresses import AddressesApi
 
 from functools import wraps
 
@@ -45,6 +46,7 @@ class Api(object):
         self.rates = RatesApi(self)
         self.orders = OrdersApi(self)
         self.shipments = ShipmentsApi(self)
+        self.addresses = AddressesApi(self)
 
     # endpoint in all the below should be resource_path
 
