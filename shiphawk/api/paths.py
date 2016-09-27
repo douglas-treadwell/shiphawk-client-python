@@ -26,12 +26,19 @@ def shipments_path(sub_path=None):
     return 'shipments/%s' % none_to_empty_string(sub_path)
 
 
-def shipment_notes_path(shipment_id):
-    return shipments_path('%s/notes' % shipment_id)
+def shipment_notes_path(shipment_id, note_id=None):
+    if not note_id:
+        return shipments_path('%s/notes' % shipment_id)
+    else:
+        return shipments_path('%s/notes/%s' % (shipment_id, note_id))
 
 
 def shipment_tracking_path(shipment_id):
     return shipments_path('%s/tracking' % shipment_id)
+
+
+def shipment_labels_path(shipment_id):
+    return shipments_path('%s/labels' % shipment_id)
 
 
 def shipments_status_path():

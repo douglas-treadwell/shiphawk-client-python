@@ -1,4 +1,4 @@
-from .paths import shipments_path
+from .paths import shipments_path, shipment_labels_path, shipment_notes_path
 
 
 class ShipmentsApi(object):
@@ -33,3 +33,52 @@ class ShipmentsApi(object):
 
     def cancel(self, shipment_id):
         return self.api.delete(shipments_path(shipment_id))
+
+    def create_label(self, shipment_id):
+        return self.api.post(shipment_labels_path(shipment_id))
+
+    def get_labels(self, shipment_id):
+        return self.api.get(shipment_labels_path(shipment_id))
+
+    def create_note(self, shipment_id, body, tag=None):
+        """
+        :param shipment_id: id of the shipment the note is for
+        :param tag: a tag for the note
+        :param body: the content of the note
+        :return: the created note, { "tag": "the tag", "body": "the body" }
+        """
+
+        data = {
+            body: body
+        }
+
+        if tag:
+            data.update({'tag': tag})
+
+        return self.api.post(shipment_notes_path(shipment_id), data=data)
+
+    def get_notes(self, shipment_id):
+        return self.api.get(shipment_notes_path(shipment_id))
+
+    def get_note(self, shipment_id, note_id):
+        return self.api.get(shipment_notes_path(shipment_id, note_id))
+
+    def update_note(self, shipment_id, note_id, body, tag=None):
+        """
+        :param shipment_id: id of the shipment the note is for
+        :param tag: a tag for the note
+        :param body: the content of the note
+        :return: the created note, { "tag": "the tag", "body": "the body" }
+        """
+
+        data = {
+            body: body
+        }
+
+        if tag:
+            data.update({'tag': tag})
+
+        return self.api.post(shipment_notes_path(shipment_id, note_id), data=data)
+
+    def delete_note(self, shipment_id, note_id):
+        return self.api.delete(shipment_notes_path(shipment_id, note_id))
