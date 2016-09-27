@@ -14,6 +14,6 @@ setup(
     url='https://github.com/Distributd/shiphawk-client-python',
     packages=['shiphawk'],
     install_requires=[
-        'requests >= 2.11.1'
+        'requests[security] >= 2.11.1'
     ]
 )
