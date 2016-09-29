@@ -16,14 +16,19 @@ class ShipmentsApi(object):
     by providing many other required details, but ShipHawk warns about doing this
     on their website, so the client only provides the recommended method.
     '''
-    def create(self, rate_id, origin_address, destination_address):
+    def create(self, rate_id, origin_address, destination_address, **options):
+        json = {
+            'rate_id': rate_id,
+            'origin_address': origin_address,
+            'destination_address': destination_address
+        }
+
+        json.update(options)
+
         return self.api.post(
             shipments_path(),
-            json={
-                'rate_id': rate_id,
-                'origin_address': origin_address,
-                'destination_address': destination_address
-            })
+            json=json
+        )
 
     def add_external(self, shipment_details):
         return self.api.post(external_shipments_path(), json=shipment_details)
