@@ -1,8 +1,6 @@
 class ShiphawkError(Exception):
     """Base for Shiphawk related errors"""
-    def __init__(self, response):
-        Exception.__init__(self)
-        self.response = response
+    pass
 
 
 class GeneralError(ShiphawkError):
@@ -54,4 +52,4 @@ error_map = {
 
 def raise_if_error(response):
     if (response.status_code // 100) != 2:
-        raise (error_map.get(response.status_code, ShiphawkError)(response))
+        raise (error_map.get(response.status_code, ShiphawkError)(response.text))
