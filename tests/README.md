@@ -15,3 +15,7 @@ message that states:
 Because ShipHawk also provides an API for adding external shipments to their platform,
 the tests catch the above error and add an external shipment instead.  That external
 shipment can be used by subsequent tests in the same way.
+
+After your SHIPHAWK_SANDBOX_API_TOKEN is set, you can run the tests using the usual:
+
+```python -m unittest discover```
