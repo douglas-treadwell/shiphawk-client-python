@@ -11,7 +11,7 @@ setup(
     description='ShipHawk API Client for Python',
     author='Douglas Treadwell',
     author_email='douglas.treadwell@gmail.com',
-    url='https://github.com/Distributd/shiphawk-client-python',
+    url='https://github.com/Distribute-Inc/shiphawk-client-python',
     packages=['shiphawk', 'shiphawk.api'],
     install_requires=[
         'requests[security] >= 2.11.1'
